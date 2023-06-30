@@ -2,15 +2,19 @@ export type Handler = (req: Request, pathParams: { [key: string]: string } | und
 
 export class Router {
     routes: { path: RegExp, handler: Handler }[];
+    notFound: (req: Request) => string
     constructor(...routes: { path: RegExp, handler: Handler}[]) {
         this.routes = routes
+        this.notFound = _ => "not found"
     }
 
     addPath(path: RegExp, handler: Handler): Router {
-        console.log(path)
-        console.log(new RegExp(`^${path.toString().substring(1, -1)}/?$`))
-        this.routes.push({path: new RegExp(`^${path}/?$`), handler})
+        this.routes.push({path: new RegExp(`^${path.toString().substring(1, -1)}/?$`), handler})
         return this
+    }
+
+    addNotFound(notFound: (req: Request) => string) {
+        this.notFound = notFound
     }
 }
 

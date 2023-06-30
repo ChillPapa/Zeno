@@ -20,7 +20,14 @@ async function serveHttp(conn: Deno.Conn, router: Router) {
                         { status: 200 }
                     )
                 )
+                return
             }
         }
+        reqEvent.respondWith(
+            new Response(
+                router.notFound(reqEvent.request),
+                { status: 404 }
+            )
+        )
     }
 }
