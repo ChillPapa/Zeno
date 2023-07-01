@@ -7,4 +7,4 @@ RUN mkdir -p /deno \
     && chown -R vscode /deno
 
 ENV PATH=${DENO_INSTALL}/bin:${PATH} \
-     DENO_DIR=${DENO_INSTALL}/.cache/deno
+    DENO_DIR=${DENO_INSTALL}/.cache/deno
