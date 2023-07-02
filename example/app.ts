@@ -25,5 +25,5 @@ const router = createRouter()
 export const app = async () => await serve(8000, router);
 
 if (import.meta.main) {
-  app()
+  app();
 }
