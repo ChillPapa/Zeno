@@ -42,6 +42,6 @@ Deno.test({
   fn() {
     const router = mod.createRouter();
 
-    assertEquals(router.notFound(new Request("test")), "not found");
+    assertEquals(router.notFound(new Request(new URL("http://test.com/"))), "not found");
   },
 });
