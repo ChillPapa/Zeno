@@ -1,4 +1,4 @@
-import { createRouter, serve } from "./mod.ts";
+import { createRouter, serve } from "../mod.ts";
 import {
   readAll,
   readerFromStreamReader,
@@ -19,7 +19,11 @@ const echo = async (req: Request): Promise<string> => {
 };
 
 const router = createRouter()
-  .get(/\//, (_) => "hello world")
+  .get(/\//, () => "hello world")
   .post(/\//, echo);
 
-await serve(8000, router);
+export const app = async () => await serve(8000, router);
+
+if (import.meta.main) {
+  app()
+}
