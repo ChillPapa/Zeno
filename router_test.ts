@@ -13,7 +13,7 @@ Deno.test({
   name: "check that router RegExp works",
   fn() {
     const router = mod.createRouter()
-      .get(/\//, (_) => "hi");
+      .get(/\//, () => "hi");
 
     assertEquals(
       router.routes[0].path,
@@ -27,7 +27,7 @@ Deno.test({
   name: "check that default HttpVerb is GET",
   fn() {
     const router = mod.createRouter()
-      .addPath(/\//, (_) => "hi");
+      .addPath(/\//, () => "hi");
 
     assertEquals(
       router.routes[0].method,

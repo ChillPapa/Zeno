@@ -1,4 +1,4 @@
-import { createRouter, serve } from "../mod.ts";
+import { createRouter, serve, type PathParams } from "../mod.ts";
 import {
   readAll,
   readerFromStreamReader,
@@ -18,9 +18,17 @@ const echo = async (req: Request): Promise<string> => {
   return "no body provided";
 };
 
+const pathParamThing = (_req: Request, pathParams?: PathParams): string => {
+  if (pathParams && pathParams["slug"]) {
+    return `you're on /${pathParams["slug"]}`
+  }
+  return "shouldn't happen"
+}
+
 const router = createRouter()
   .get(/\//, () => "hello world")
-  .post(/\//, echo);
+  .post(/\//, echo)
+  .get(/\/(?<slug>.+)/, pathParamThing);
 
 export const app = async () => await serve(8000, router);
 

@@ -13,6 +13,7 @@ async function serveHttp(conn: Deno.Conn, router: Router) {
 
   for await (const reqEvent of httpConn) {
     for (const [idx, route] of router.routes.entries()) {
+      console.log(route)
       if (idx == router.routes.length - 1) {
         if (
           route.path.test(new URL(reqEvent.request.url).pathname) &&
@@ -22,8 +23,7 @@ async function serveHttp(conn: Deno.Conn, router: Router) {
             new Response(
               await route.handler(
                 reqEvent.request,
-                (route.path.exec(new URL(reqEvent.request.url).pathname) ||
-                  { groups: {} }).groups,
+                route.path.exec(new URL(reqEvent.request.url).pathname)?.groups || {},
               ) + "\n",
               { status: 200 },
             ),
@@ -47,8 +47,7 @@ async function serveHttp(conn: Deno.Conn, router: Router) {
           new Response(
             await route.handler(
               reqEvent.request,
-              (route.path.exec(new URL(reqEvent.request.url).pathname) ||
-                { groups: {} }).groups,
+              route.path.exec(new URL(reqEvent.request.url).pathname)?.groups || {},
             ) + "\n",
             { status: 200 },
           ),

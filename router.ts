@@ -1,8 +1,36 @@
+/**
+ * Handler
+ * 
+ * this is the type of a handler
+ * 
+ * example:
+ * 
+ * ```ts
+ * const handler = (req: Request) => req.method
+ * ```
+ * 
+ * is a `Handler` and so is that async version of that
+ * 
+ * @param { Request } req - this is the request object
+ * @param { [key: string]: string } - these are path params
+ */
 export type Handler = (
   req: Request,
-  pathParams: { [key: string]: string } | undefined,
+  pathParams: PathParams,
 ) => string | Promise<string>;
 
+/**
+ * PathParams
+ * 
+ * the type of path params
+ */
+export type PathParams = { [key: string]: string }
+
+/**
+ * HttpVerb
+ * 
+ * this is an enum of http verbs
+ */
 export const enum HttpVerb {
   GET = "GET",
   POST = "POST",
@@ -15,6 +43,13 @@ export const enum HttpVerb {
   TRACE = "TRACE",
 }
 
+/**
+ * Router
+ * 
+ * this is the router class
+ * 
+ * it allows you to add routes
+ */
 export class Router {
   routes: { path: RegExp; handler: Handler; method: HttpVerb }[];
   notFound: (req: Request) => string | Promise<string>;
@@ -23,7 +58,7 @@ export class Router {
     ...routes: { path: RegExp; handler: Handler; method: HttpVerb }[]
   ) {
     this.routes = routes;
-    this.notFound = (_) => "not found";
+    this.notFound = () => "not found";
   }
 
   addPath(
@@ -32,7 +67,7 @@ export class Router {
     method: HttpVerb = HttpVerb.GET,
   ): Router {
     this.routes.push({
-      path: new RegExp(`^${path.toString().substring(1, -1)}/?$`),
+      path: new RegExp(`^${path.toString().substring(1, path.toString().length - 1)}/?$`),
       handler,
       method,
     });
@@ -41,7 +76,7 @@ export class Router {
 
   get(path: RegExp, handler: Handler): Router {
     this.routes.push({
-      path: new RegExp(`^${path.toString().substring(1, -1)}/?$`),
+      path: new RegExp(`^${path.toString().substring(1, path.toString().length - 1)}/?$`),
       handler,
       method: HttpVerb.GET,
     });
@@ -50,7 +85,7 @@ export class Router {
 
   post(path: RegExp, handler: Handler): Router {
     this.routes.push({
-      path: new RegExp(`^${path.toString().substring(1, -1)}/?$`),
+      path: new RegExp(`^${path.toString().substring(1, path.toString().length - 1)}/?$`),
       handler,
       method: HttpVerb.POST,
     });
@@ -59,7 +94,7 @@ export class Router {
 
   put(path: RegExp, handler: Handler): Router {
     this.routes.push({
-      path: new RegExp(`^${path.toString().substring(1, -1)}/?$`),
+      path: new RegExp(`^${path.toString().substring(1, path.toString().length - 1)}/?$`),
       handler,
       method: HttpVerb.PUT,
     });
@@ -68,7 +103,7 @@ export class Router {
 
   delete(path: RegExp, handler: Handler): Router {
     this.routes.push({
-      path: new RegExp(`^${path.toString().substring(1, -1)}/?$`),
+      path: new RegExp(`^${path.toString().substring(1, path.toString().length - 1)}/?$`),
       handler,
       method: HttpVerb.DELETE,
     });
