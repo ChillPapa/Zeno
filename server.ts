@@ -1,6 +1,12 @@
 import { type Router } from "./router.ts";
 
-export async function serve(port: number, router: Router) {
+/**
+ * serves the program
+ * @param { number } [port=8000] - the port that the server should be on
+ * @param { Router } router - the router
+ * @public
+ */
+export async function serve(router: Router, port = 8000) {
   const server = Deno.listen({ port });
 
   for await (const conn of server) {
@@ -8,12 +14,17 @@ export async function serve(port: number, router: Router) {
   }
 }
 
+/**
+ * serves the http
+ * @param { Deno.Conn } conn - the connection
+ * @param { Router } router - the router
+ * @private
+ */
 async function serveHttp(conn: Deno.Conn, router: Router) {
   const httpConn = Deno.serveHttp(conn);
 
   for await (const reqEvent of httpConn) {
     for (const [idx, route] of router.routes.entries()) {
-      console.log(route)
       if (idx == router.routes.length - 1) {
         if (
           route.path.test(new URL(reqEvent.request.url).pathname) &&

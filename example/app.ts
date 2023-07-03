@@ -30,7 +30,7 @@ const router = createRouter()
   .post(/\//, echo)
   .get(/\/(?<slug>.+)/, pathParamThing);
 
-export const app = async () => await serve(8000, router);
+export const app = async () => await serve(router);
 
 if (import.meta.main) {
   app();
