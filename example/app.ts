@@ -28,10 +28,11 @@ const pathParamThing = (_req: Request, pathParams?: PathParams): string => {
 const router = createRouter()
   .get(/\//, () => "hello world")
   .post(/\//, echo)
+  .addPath(/\/no/, () => "no")
   .get(/\/(?<slug>.+)/, pathParamThing);
 
-export const app = async () => await serve(router);
-
 if (import.meta.main) {
-  app();
+  await serve(router);
 }
+
+export default router
