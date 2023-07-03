@@ -34,7 +34,8 @@ async function serveHttp(conn: Deno.Conn, router: Router) {
             new Response(
               await route.handler(
                 reqEvent.request,
-                route.path.exec(new URL(reqEvent.request.url).pathname)?.groups || {},
+                route.path.exec(new URL(reqEvent.request.url).pathname)
+                  ?.groups || {},
               ) + "\n",
               { status: 200 },
             ),
@@ -58,7 +59,8 @@ async function serveHttp(conn: Deno.Conn, router: Router) {
           new Response(
             await route.handler(
               reqEvent.request,
-              route.path.exec(new URL(reqEvent.request.url).pathname)?.groups || {},
+              route.path.exec(new URL(reqEvent.request.url).pathname)?.groups ||
+                {},
             ) + "\n",
             { status: 200 },
           ),
